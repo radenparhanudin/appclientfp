@@ -1,0 +1,16 @@
+{
+    "name": "TypeA",
+    "alias": "typea",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\TypeA\\Providers\\TypeAServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}
