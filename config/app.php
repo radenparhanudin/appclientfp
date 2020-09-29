@@ -12,7 +12,9 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    // 'name' => env('APP_NAME', 'Laravel'),
+    'name' => "appClientFP",
+    'description' => "App Client Finger Print",
 
     /*
     |--------------------------------------------------------------------------
@@ -52,6 +54,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'api_url' => 'http://sikda.lombokbaratkab.go.id/simpeg/api/',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Makassar',
 
     /*
     |--------------------------------------------------------------------------
