@@ -10,6 +10,59 @@ use TADPHP\TADFactory;
 
 class TypeAController extends Controller
 {
+    public function index()
+    {
+        return view('typea::check-mesin-support.index');
+    }
+
+    public function check(Request $request)
+    {
+        if ($request->ajax()) {
+            try {
+                $tad_factory   = new TADFactory(['ip'=> $request->get('input_ip_address')]);
+                $tad           = $tad_factory->get_instance();
+                $user_info     = $tad->get_all_user_info()->to_array()['Row'];
+                $total_user    = sizeof($user_info);
+                $att_log       = $tad->get_att_log()->to_array()['Row'];
+                $total_att_log = sizeof($att_log);
+                return response()->json([
+                    'success'    => true, 
+                    'message'    => 'Berhasil', 
+                    'info_mesin' => [
+                        'ip_address'       => $request->get('input_ip_address'), 
+                        'platform'         => $tad->get_platform()->to_array()['Row']['Information'], 
+                        'serial_number'    => $tad->get_serial_number()->to_array()['Row']['Information'], 
+                        'oem_vendor'       => $tad->get_oem_vendor()->to_array()['Row']['Information'], 
+                        'mac_address'      => $tad->get_mac_address()->to_array()['Row']['Information'], 
+                        'device_name'      => $tad->get_device_name()->to_array()['Row']['Information'], 
+                        'manufacture_time' => $tad->get_manufacture_time()->to_array()['Row']['Information'], 
+                        'firmware_version' => $tad->get_firmware_version()->to_array()['Row']['Information']
+                    ], 
+                    'user_info' => [
+                        'Name' => $user_info[$total_user-1]['Name'], 
+                        'PIN'  => $user_info[$total_user-1]['PIN'], 
+                        'PIN2' => $user_info[$total_user-1]['PIN2'], 
+                    ], 
+                    'att_log' => [
+                        'PINatt_log' => $att_log[$total_att_log-1]['PIN'], 
+                        'DateTime'   => $att_log[$total_att_log-1]['DateTime'], 
+                        'Verified'   => $att_log[$total_att_log-1]['Verified'], 
+                    ], 
+                ]);
+            } catch (\Exception $e) {
+                // return $e->getMessage();
+                return response()->json([
+                    'errors' => true,
+                    'message' => 'Tidak dapat memulai koneksi dengan perangkat ' .$request->get('input_ip_address'),
+                ], 422);
+            }
+            
+        }
+        else{
+            return abort(404);
+        }
+    }
+    
     public function get_log_user(Request $request)
     {
         $tad_factory = new TADFactory(['ip'=>'192.168.0.102']);
